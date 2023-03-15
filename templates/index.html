@@ -1,0 +1,99 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <section class="tm-white-bg section-padding-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="tm-section-header section-margin-top">
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+					<div class="col-lg-4 col-md-6 col-sm-6"><h2 class="tm-section-title">Zinara Licence <br/>& Win Promotion
+                    </h2>
+                    <hr/>
+                        <div class="text-center" id="demo"></div>
+                    </div>
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+				</div>
+
+			</div>
+
+		<div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-right">
+					<img src='{% static "img/licence.jpeg"%}' alt="image" class="img-responsive">
+					<a href="#" hidden>
+						<div class="tm-red-gradient-bg tm-city-price-container">
+							<span>Weekly Provincial Draws</span>
+							<span>1000 Annual Licences up for grabs</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6">
+
+				<!-- Nav tabs -->
+				<div class="tm-home-box-1">
+                                    <ul class="nav nav-tabs tm-white-bg" role="tablist" id="hotelCarTabs">
+                                        <li role="presentation">
+                                            <a href="#hotel" aria-controls="hotel" role="tab" data-toggle="tab">Eligibility Cherk</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade in active tm-white-bg" id="hotel">
+                                            <div class="tm-search-box effect2">
+                                                <form action="{% url 'vrn_eligibility' %}" method="post" class="hotel-search-form">
+                                                {% csrf_token %}
+                                                    <div class="tm-form-inner">
+                                                        <div class="form-group">
+                                                            <div class='input-group' id=''>
+                                                                <input name="vrn" id="vrn" type='text' class="uc-text-smooth form-control" placeholder="Vehicle Registration #" />
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-car"></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class='input-group' id=''>
+                                                                <select name="prvn" id="prvn" class="uc-text-smooth form-control">
+                                                                    <option>---Select Province---</option>
+                                                                    {% for province in provinces %}
+                                                                    <option value="{{ province.id }}">{{ province.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                                <span class="input-group-addon">
+                                                                    <span class="fa fa-map"></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group tm-yellow-gradient-bg text-center">
+                                                        <button type="submit" class="btn tm-yellow-btn">Check Now</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                <hr/>
+                                </div>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-center">
+					<img src='{% static "img/car_present.png"%}' alt="image" class="img-responsive">
+					<a href="#" hidden >
+						<div class="tm-yellow-gradient-bg tm-city-price-container">
+							<span>Grand Price</span>
+							<span>Motor Vehicle </span>
+						</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+
+		</div>
+
+	</section>
+{% endblock %}

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/eaf8991d-2208-4d29-b14a-b633566e4a41/resourceGroups/zinPromo-RG/providers/Microsoft.Web/sites/zinara-zitf-promo",
+    "appService.deploySubpath": "."
+}

@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load table_tags %}
+{% block content %}
+    <section class="tm-white-bg section-padding-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="tm-section-header section-margin-top">
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+					<div class="col-lg-4 col-md-6 col-sm-6"><h3 class="tm-section-title">Weekly Draw Results
+                    </h3>
+                    </div>
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+				</div>
+
+			</div>
+
+
+        <div class="col-lg-10 col-md-10 col-sm-12">
+{#        {% render_table table_ww %}#}
+<hr/>
+{#				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-center">#}
+					<table class="table table-condensed">
+                        <thead ><th>Week</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+{#                            <th>National ID</th>#}
+                            <th>Province</th>
+
+                        </thead>
+                        <tbody>
+                        {% if provincial_winners %}
+                            {% for winner in provincial_winners %}
+                            <tr>
+                                <td>{{ winner.draw_number }}</td>
+                                <td>{{ winner.weekly_winner.first_name }}</td>
+                                <td>{{ winner.weekly_winner.last_name }}</td>
+{#                                <td>{{ winner.weekly_winner.nat_id }}</td>#}
+                                <td>{{ winner.province }}</td>
+
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+{#				</div>#}
+			</div>
+
+
+		</div>
+
+	</section>
+{% endblock %}
