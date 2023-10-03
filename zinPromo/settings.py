@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-from config_secrets import Django_Secrets, Email_configs, SMS_configs
+from config_secrets import Django_Secrets
 from django.contrib import staticfiles
-from twilio.rest import Client
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 secret_key = Django_Secrets()
 SECRET_KEY = secret_key.key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'promozin.azurewebsites.net']
 # CSRF_TRUSTED_ORIGINS = ["https://promozin.azurewebsites.net"]
@@ -40,11 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ZinaraWeb",
     "Api",
-    'table',
     'rest_framework_datatables',
+    'rest_framework.authtoken',
     'rest_framework',
     'rest_framework_swagger',
     'corsheaders',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -59,12 +59,22 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ),
+    'DEFAULT_SCHEMA_CLASS': 
+        'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework_datatables.renderers.DatatablesRenderer',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework_datatables.filters.DatatablesFilterBackend',
     ),
@@ -142,22 +152,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
-# Email Configurations
-email_config = Email_configs()
-SENDGRID_API_KEY = email_config.sendgrid_api_api
-SENDGRID_SANDBOX_MODE_IN_DEBUG = False
-account_sid = email_config.account_sid
-auth_token = email_config.auth_token
-CLIENT = Client(account_sid, auth_token)
-
-# ZinD3v0pp55!2022
-# SMS Gateway
-sms_config = SMS_configs()
-twilio_account_sid = sms_config.account_sid
-twilio_auth_token = sms_config.auth_token
-twilio_client = Client(twilio_account_sid, twilio_auth_token)

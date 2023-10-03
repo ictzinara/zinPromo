@@ -1,5 +1,4 @@
 from os.path import isfile
-import xlrd
 import logging
 import openpyxl
 from django.db.models import Q
@@ -9,7 +8,6 @@ from django.template import loader
 from django.core.exceptions import ObjectDoesNotExist
 from Api.models import Province, PromotionWeeklyDraw, LicenseDb
 from zinPromo.forms import PromotionApplicantForm, AddVehicleForm
-from zinPromo.settings import twilio_client
 from zinPromo.tables import WeeklyDrawTable
 from django.core.mail import send_mail
 
@@ -70,23 +68,6 @@ def index(request):
 
 def upload(request):
     if "GET" == request.method:
-        # message = twilio_client.messages \
-        #     .create(
-        #     messaging_service_sid='MG9c69da54bd037941c58485ff6889206d',
-        #     body='Congratulations Isheanesu you qualify for the Zinara License and Win Promotion.',
-        #     to='+263719571264'
-        # )
-        #
-        # print(message.sid)
-
-
-        # message = twilio_client.messages.create(
-        #     from_='whatsapp:+263774845093',
-        #     body='Your appointment is coming up on July 21 at 3PM',
-        #     to='whatsapp:+263719571264'
-        # )
-        #
-        # print(message.sid)
         return render(request, 'upload.html', {})
     else:
         excel_file = request.FILES["excel_file"]
