@@ -4,12 +4,14 @@ import logging
 import openpyxl
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, BadHeaderError
 from django.template import loader
 from django.core.exceptions import ObjectDoesNotExist
 from Api.models import Province, PromotionWeeklyDraw, LicenseDb
-from zinPromo.forms import PromotionApplicantForm ,AddVehicleForm
+from zinPromo.forms import PromotionApplicantForm, AddVehicleForm
+from zinPromo.settings import twilio_client
 from zinPromo.tables import WeeklyDrawTable
+from django.core.mail import send_mail
 
 # import pandas lib as pd
 import pandas as pd
@@ -44,6 +46,21 @@ logger = logging.getLogger(__name__)
 def index(request):
     template = loader.get_template('index.html')
     provinces = Province.objects.all()
+    body = {
+        'message': "Congratulations you have entered the licence and win promotion",
+        'disclaimer': "Stand a chance to win an annual Licence, Solar Panels and More!!! Ts&Cs apply!",
+        'Regards': "Thank you for you compliance and support."
+    }
+    email_from = "zebs@zinara.co.zw"
+    email_to = "iteemag@live.com"
+    subject = "Zinara Licence and Win Promotion."
+    body = body
+    message = "\n".join(body.values())
+    try:
+        send_mail(subject, message, email_from, [email_to])
+    except BadHeaderError:
+        error_message = 'Invalid header found.'
+
     context = {
         'data': [],
         'provinces': provinces,
@@ -53,6 +70,23 @@ def index(request):
 
 def upload(request):
     if "GET" == request.method:
+        # message = twilio_client.messages \
+        #     .create(
+        #     messaging_service_sid='MG9c69da54bd037941c58485ff6889206d',
+        #     body='Congratulations Isheanesu you qualify for the Zinara License and Win Promotion.',
+        #     to='+263719571264'
+        # )
+        #
+        # print(message.sid)
+
+
+        # message = twilio_client.messages.create(
+        #     from_='whatsapp:+263774845093',
+        #     body='Your appointment is coming up on July 21 at 3PM',
+        #     to='whatsapp:+263719571264'
+        # )
+        #
+        # print(message.sid)
         return render(request, 'upload.html', {})
     else:
         excel_file = request.FILES["excel_file"]
@@ -93,7 +127,7 @@ def upload(request):
                 form = AddVehicleForm(data=data_row)
                 if form.is_valid():
                     if form.save():
-                        i = i+1
+                        i = i + 1
                         print("New Record Created")
                     else:
                         logger.error("Error Saving data %s" % data_row)

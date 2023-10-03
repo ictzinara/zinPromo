@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+from config_secrets import Django_Secrets, Email_configs, SMS_configs
 from django.contrib import staticfiles
-
+from twilio.rest import Client
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-k1kop%yct&in5o@h!#%#87snw!kq**rc#r573h(t&4r0yu@_!z"
-
+secret_key = Django_Secrets()
+SECRET_KEY = secret_key.key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'promozin.azurewebsites.net']
-CSRF_TRUSTED_ORIGINS = ["https://promozin.azurewebsites.net"]
+# CSRF_TRUSTED_ORIGINS = ["https://promozin.azurewebsites.net"]
 
 # Application definition
 
@@ -142,5 +142,22 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
+# Email Configurations
+email_config = Email_configs()
+SENDGRID_API_KEY = email_config.sendgrid_api_api
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+account_sid = email_config.account_sid
+auth_token = email_config.auth_token
+CLIENT = Client(account_sid, auth_token)
+
+# ZinD3v0pp55!2022
+# SMS Gateway
+sms_config = SMS_configs()
+twilio_account_sid = sms_config.account_sid
+twilio_auth_token = sms_config.auth_token
+twilio_client = Client(twilio_account_sid, twilio_auth_token)
