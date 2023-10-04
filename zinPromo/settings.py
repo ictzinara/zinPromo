@@ -25,9 +25,8 @@ SECRET_KEY = secret_key.key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'promozin.azurewebsites.net','https://zwzinara.net']
-ALLOWED_HOSTS = ['localhost','promozin.azurewebsites.net','https://www.zwzinara.net']
-CSRF_TRUSTED_ORIGINS = ["https://promozin.azurewebsites.net","https://www.zwzinara.net"]
+ALLOWED_HOSTS = ['https://zwzinara.net','promozin.azurewebsites.net']
+CSRF_TRUSTED_ORIGINS = ["https://www.zwzinara.net","https://promozin.azurewebsites.net"]
 
 # Application definition
 
