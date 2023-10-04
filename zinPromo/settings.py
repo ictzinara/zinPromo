@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 secret_key = Django_Secrets()
 SECRET_KEY = secret_key.key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', 'promozin.azurewebsites.net','https://zwzinara.net']
 CSRF_TRUSTED_ORIGINS = ["https://promozin.azurewebsites.net","https://zwzinara.net"]
