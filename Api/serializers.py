@@ -32,3 +32,18 @@ class LicenseDbSerializer(serializers.ModelSerializer):
             'LICENCE_EXPIRY_DATE',
             'Date_Captured'
         )
+
+
+# Define the VehicleSerializer class with the fields id, vehicle_class and vehicle_mass
+class VehicleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VehicleClass
+        fields = ['id', 'vehicle_class', 'vehicle_mass']
+
+# Define the TariffSerializer class with the fields id, fee_type, amount and vehicle (nested serializer)
+class TariffSerializer(serializers.ModelSerializer):
+    vehicle = VehicleSerializer(read_only=True)
+    class Meta:
+        model = Tariff
+        fields = ['id', 'fee_type', 'amount', 'vehicle']
+

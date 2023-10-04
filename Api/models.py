@@ -115,3 +115,33 @@ class LicenseDb(models.Model):
 
     def get_absolute_url(self):
         return reverse("_detail", kwargs={"pk": self.pk})
+
+# Define the Vehicle class model with the fields class and mass
+class VehicleClass(models.Model):
+    CLASS_CHOICES = (
+        ('0', 'Motorcyles'),
+        ('1', 'Light vehicles'),
+        ('2', 'Buses'),
+        ('3', 'Heavy vehicles'),
+        ('4', 'Haulage trucks'),
+    )
+    vehicle_class = models.CharField(max_length=1, choices=CLASS_CHOICES)
+    vehicle_mass = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.vehicle_class} - {self.vehicle_mass} kg"
+
+# Define the Tariff class model with the fields fee_type, amount and vehicle (foreign key)
+class Tariff(models.Model):
+    FEE_CHOICES = (
+        ('T', 'Tolling fee'),
+        ('L', 'Vehicle licensing fee'),
+        ('B', 'Bridge fee'),
+        ('R', 'Transit fee'),
+    )
+    fee_type = models.CharField(max_length=1, choices=FEE_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    vehicle = models.ForeignKey(VehicleClass, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.fee_type} - {self.amount} USD"
