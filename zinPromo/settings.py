@@ -27,7 +27,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['www.zwzinara.net','promozin.azurewebsites.net']
 CSRF_TRUSTED_ORIGINS = ["www.zwzinara.net","promozin.azurewebsites.net"]
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'www.zwzinara.net',
+    'promozin.azurewebsites.net',
+)
 # Application definition
 
 INSTALLED_APPS = [
