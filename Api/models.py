@@ -228,8 +228,6 @@ class Employee(models.Model):
     
     def __str__(self):
         return f'{self.firstName}'
-
-
 # A model for a workplace entity, such as a department, team, site or project
 class Workplace(models.Model):
     name = models.CharField(max_length=100)
@@ -281,8 +279,6 @@ class Record(models.Model):
 
     def __str__(self):
         return self.name
-
-# A model for a record-indicator relationship, which stores the value of an indicator for a record
 class RecordIndicator(models.Model):
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
     indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE)
@@ -290,7 +286,6 @@ class RecordIndicator(models.Model):
 
     def __str__(self):
         return f'{self.record} - {self.indicator}'
-
 class Risk(models.Model):
     RISK_LEVELS = (
         ('L', 'Low'),
@@ -306,7 +301,6 @@ class Risk(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.description}'
-
 class Incident(models.Model):
     INCIDENT_TYPES = (
         ('A', 'Accident'),
@@ -339,9 +333,6 @@ class Incident(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.date} - {self.type} - {self.date} - {self.employee} - {self.severity}'
-    
-
-
 class Compliance(models.Model):
     COMPLIANCE_TYPES = (
         ('L', 'Legal'),
@@ -358,7 +349,6 @@ class Compliance(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.type} - {self.requirement}'
-
 class ChecklistItem(models.Model):
     question = models.CharField(max_length=200)
     answer = models.BooleanField()

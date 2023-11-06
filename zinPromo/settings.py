@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'corsheaders',
     'django_tables2',
+    'django_extensions',
+    'werkzeug_debugger_runserver',
 ]
 
 MIDDLEWARE = [
