@@ -232,14 +232,14 @@ class Employee(models.Model):
 class Workplace(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    manager = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='workplaces_manager')
+    manager = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='workplaces_manager')
     address = models.TextField()
     employees = models.ManyToManyField('Employee',related_name='workplaces_employees')
 
     def __str__(self):
         return self.name
 
-# A model for a safety, health, environment and quality (SHEQ) standard, such as ISO 9001, ISO 14001 or OHSAS 18001
+# A model for a safety, health, environment and quality (SHEQ) standard, such as ISO 9001, ISO 14001 or ISO 45001 NSSA act
 class Standard(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -286,6 +286,7 @@ class RecordIndicator(models.Model):
 
     def __str__(self):
         return f'{self.record} - {self.indicator}'
+    
 class Risk(models.Model):
     RISK_LEVELS = (
         ('L', 'Low'),
@@ -301,12 +302,15 @@ class Risk(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.description}'
+    
 class Incident(models.Model):
     INCIDENT_TYPES = (
         ('A', 'Accident'),
         ('I', 'Injury'),
         ('D', 'Damage'),
         ('N', 'Near miss'),
+        ('E', 'Environmental'),
+        ('F', 'Fire'),
     )
     SEVERITY_CHOICES = (
         ('Low', 'Low'),
@@ -319,11 +323,11 @@ class Incident(models.Model):
         ('In Progress', 'In Progress'),
         ('Closed', 'Closed'),
     )
-    workplace = models.ForeignKey('Workplace', on_delete=models.CASCADE, related_name='workplace_incidents')
+    workplace = models.ForeignKey(Workplace, on_delete=models.CASCADE, related_name='workplace_incidents')
     date = models.DateField()
     type = models.CharField(max_length=1, choices=INCIDENT_TYPES)
     action_taken = models.TextField()
-    employee = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True, related_name='employee_incidents')
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='employee_incidents')
     reported_by = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True, related_name='incidents_reporter')
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     description = models.TextField()
@@ -333,6 +337,7 @@ class Incident(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.date} - {self.type} - {self.date} - {self.employee} - {self.severity}'
+    
 class Compliance(models.Model):
     COMPLIANCE_TYPES = (
         ('L', 'Legal'),
@@ -349,18 +354,20 @@ class Compliance(models.Model):
 
     def __str__(self):
         return f'{self.workplace} - {self.type} - {self.requirement}'
+    
 class ChecklistItem(models.Model):
     question = models.CharField(max_length=200)
     answer = models.BooleanField()
 
     def __str__(self):
         return self.question
+    
 class Audit(models.Model):
     AUDIT_TYPES = (
         ('I', 'Internal'),
         ('E', 'External'),
     )
-    workplace = models.ForeignKey('Workplace', on_delete=models.CASCADE, related_name='audits')
+    workplace = models.ForeignKey(Workplace, on_delete=models.CASCADE, related_name='audits')
     date = models.DateField()
     type = models.CharField(max_length=1, choices=AUDIT_TYPES)
     findings = models.TextField()
@@ -374,4 +381,19 @@ class Audit(models.Model):
     def __str__(self):
         return f'{self.workplace} - {self.date} - {self.type}-{self.date} - {self.employee} - {self.score}%'
 
-
+# Action and Timelines
+# class AuditAction(models.Model):
+#     STATUS_TYPES = (
+#         ('Open', 'Open'),
+#         ('IP', 'In Progress'),
+#         ('Due', 'Overdue'),
+#     )
+#     workplace_audit = models.ForeignKey(Audit, on_delete=models.CASCADE, related_name='audits')
+#     date_from = models.DateField()
+#     date_to = models.DateField()
+#     status = models.CharField(max_length=1, choices=STATUS_TYPES)
+#     responsible_manager = models.ForeignKey('Employee', on_delete=models.SET_NULL,null=True,related_name='audited_employee')
+#     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    
+#     def __str__(self):
+#         return f'{self.workplace_audit} - {self.date_from} - {self.date_to}-{self.status} - {self.responsible_manager} - {self.department}'

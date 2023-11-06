@@ -26,7 +26,7 @@ SECRET_KEY = secret_key.key
 DEBUG = True
 
 ALLOWED_HOSTS = ['*','promozin.azurewebsites.net','https://www.zwzinara.net','http://localhost:4200']
-CSRF_TRUSTED_ORIGINS = ["*","https://promozin.azurewebsites.net","https://www.zwzinara.net", "http://localhost:4200"]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1","https://promozin.azurewebsites.net","https://www.zwzinara.net", "http://localhost:4200"]
 # Application definition
 CORS_ALLOW_HEADERS = "*"
 CORS_ORIGIN_ALLOW_ALL = True
